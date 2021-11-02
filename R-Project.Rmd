@@ -1,0 +1,208 @@
+---
+title: "Exploring Bikeshare data"
+author: "Khadidja"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Project Overview
+Exploring data related to bike share systems for three major cities in the United States—Chicago, New York City, and Washington. We will be answering interesting questions about it by computing descriptive statistics and making visualizations!
+
+# Q01 - Popular times of travel | What is the most common month?
+
+
+```{r}
+#Importing data
+chi<-read.csv('chicago.csv')
+ny<-read.csv('new-york-city.csv')
+wash<-read.csv('washington.csv')
+
+#Loading some libraries we are in need to, help in wrangling the dates and easier manipulate the data.
+library(lubridate)  #Manipulating the dates
+library(modeest)  #Calculating mode
+library(ggplot2)  #Creating visualizations
+library(dplyr)  #Manipulating data frames
+
+#Creating new column only for months in each city data set
+chi$month=month(chi$Start.Time) 
+ny$month=month(ny$Start.Time)
+wash$month=month(wash$Start.Time)
+
+#Creating function 'Common_month' that takes the short and the complete city name as input and returns the most common month and the related data visualization
+common_month=function(cit,pseudo){
+  result=(paste("The most common month of travel in",pseudo,"is the month number:",mfv(cit$month)))  #mfv() finds the most frequent value
+  plot=ggplot(aes(x=month), data=cit)+
+    geom_histogram(binwidth=0.5, color=I('black'), fill=I('darkcyan'))+
+    scale_x_continuous(breaks=seq(1,6,1))+
+    ggtitle(paste('The monthly travels histogram for',pseudo,'city'))+
+    xlab ('Months of travel')+
+    ylab ('Count of travels')
+  
+  list1=list(result,plot)
+  return(list1)
+}
+
+```
+
+```{r}
+#Using the function common_month, inserting the city names as arguments
+common_month(chi,"Chicago")
+```
+
+
+
+The histogram shows clearly that the month 06 'June' holds the highest number of travels, about 100000 travels, followed by 'May' with about 66000 travels, while the smallest number about 21900 is for month 01 'January'
+```{r}
+common_month(ny,"New York")
+```
+
+For New York city the month number 06 'June' is also the most common with more than 75000 travels followed by month 05 'May', while the month 01 'January' holds the least number of travels about 32000.
+```{r}
+common_month(wash,"Washington")
+```
+
+
+The month number 06 'June' is the most common for Washington as well with more than 68000 travels, followed by month 04 'April' with more than 62000 travels, and the smallest number about 30000 is assigned for month 01 'January'.
+
+<font size="4"> Summary statistics </font>
+
+```{r}
+#New data frames holding the months and the count of travels
+C=aggregate(chi$month, by=list(chi$month), FUN=length) #Chicago
+N=aggregate(ny$month, by=list(ny$month), FUN=length) #New York
+W=aggregate(wash$month, by=list(wash$month), FUN=length) #Washington
+
+#Summary Stats on the months
+summary(C$x)  #Chicago
+summary(N$x)  #New York
+summary(W$x)  #Washington
+```
+
+The actual values resulting from the statistical calculations confirm exactly what we had appearing on the data visualizations above, the max and the min values confirm the ranges we had from the charts.
+
+## Q02 - Popular stations and trip | What is the most common start station?
+
+
+```{r}
+#Creating new function, input: short and the complete name, returns: the most common Start Station with the data visualization, as well as the summary stats related to the top 5 stations
+common_station=function(cit,pseudo){
+  result1=paste("The most common start station for",pseudo,"city is",mfv(cit$Start.Station))
+  
+  df=aggregate(cit$Start.Station, by=list(cit$Start.Station), FUN=length)#Creating new data frame storing the station with the related count of travels
+  df=tail(df[order(df$x),],5) #Pulling the top 5 stations after ordering the data frame
+  names(df)[1]<-"Start_station" #Renaming the columns
+  names(df)[2]<-"Count"
+  
+  result2=summary(df$Count)
+  
+  result3=ggplot(aes(x=Start_station, y=Count),data=df)+
+    geom_bar(stat='identity', width=0.5, color=I('black'), fill=I('darkseagreen1'))+
+    ggtitle(paste('Top 05 Start stations in',pseudo,'city'))+
+    ylab ('Count of travels')+
+    coord_flip()
+  
+  list2=list(result1,result3,result2)
+  return(list2)
+}
+```
+
+```{r}
+#Using the function common_station, inserting the city names as arguments
+common_station(chi,"Chicago")
+```
+
+The previous bar chart compares the counts of travels of the top 5 Start stations in Chicago. 'Streeter Dr & Grand Ave' is the most common, followed by 'Clinton St & Washington Blvd'. The counts range from about 3400 to 6900.
+
+```{r}
+common_station(ny, "New York")
+```
+
+The bar chart for New York shows that 'Pershing Square North' is the most common followed by 'E 17 St & Broadway'. The number of travels range from about 1900 to 3000.
+```{r}
+common_station(wash, "Washington")
+```
+
+'Columbus Circle / Union Station' is the most common station followed by 'Lincoln Memorial' and the last one is '15th & P St NW'. The values range between about 5600 and 3500.
+
+The results of summary stats integrated in the function confirm exactly the intervals of values taken from the plots, for all the cities. 
+
+## Q03 - Trip duration | What is the total travel time for each user type in different cities?
+
+<font size="5"> Starting with 'Chicago' </font> 
+
+```{r}
+#Applying the sum function using the by command, getting each user type with the total travel time in minutes 
+by(chi$Trip.Duration/60,chi$User.Type, sum) #divide Trip.Duration by 60 to get the time in minutes
+```
+
+```{r}
+#As long as the total travel time for 'Dependent' type is insignificant, we will be plotting only for 'Customer' and 'Subscriber'
+newdf=chi[-which(chi$User.Type=='Dependent'),]  #Creating new data frame newdf, 'Dependent' omitted 
+qplot(x=User.Type, y=Trip.Duration/60, data=newdf,
+      geom='boxplot', color=I("blue4"), fill=I('deepskyblue3'))+
+  coord_cartesian(ylim=c(0,40))+  #Adjusting and omitting the outliers
+  ggtitle("Travel time per user type in Chicago city") +
+  labs(x = "User type",y="Trip duration in minutes")
+```
+
+The median line is much higher for Customers, which indicates that Users of type 'Customer' registered longer travel time than 'Subscribers',  50% of Customers spent about 23 minutes while the Subscribers spent about 9 minutes.  
+
+<font size="4"> Summary stats</font> 
+
+```{r}
+by(newdf$Trip.Duration/60,newdf$User.Type, summary)
+```
+By looking at the actual values obtained we can confirm our results on the graph, the first quartile at 25% for Customers is 15.45 and looks right on the plot. The 75% mark for Subscribers is 14.983 and it is exactly what had showing on the boxplot.
+
+
+<font size="5">'New York' city</font> 
+```{r}
+#Finding the total travel time for each user type
+by(ny$Trip.Duration/60,ny$User.Type, sum)
+```
+ 
+```{r}
+#Notice that we have a third type but has no name, we will keep only "Customer" and "Subscriber" for the upcoming explorations
+newdf1=ny[-which(ny$User.Type==''),] #new data frame, unnamed type removed
+
+qplot(x=User.Type, y=Trip.Duration/60, data=newdf1,
+      geom='boxplot', color=I("cadetblue4"), fill=I('cadetblue3'))+
+  coord_cartesian(ylim=c(0,40))+  #Adjusting and omitting the outliers
+  ggtitle("Travel time per user type in New York city") +
+  labs(x = "User type",y="Trip duration in minutes")
+```
+
+From the plot we observe that the Interquartile Range for "Customers" lays between 14 and 29 mins, and the median is at about 22 mins, while for "Subscribers" the IQR is between 6 and 16 mins, and its median falls at about 9 mins. The difference between them is considerable that the time for Subscribers is almost half of that for Customers. 
+
+<font size="4"> Summary stats</font> 
+```{r}
+by(newdf1$Trip.Duration/60,newdf1$User.Type, summary)
+```
+Again the exact calculation above proves the results obtained from the graph, IQR for Customer between 14.23 and 29.15 mins, IQR for Subscriber between 5.817 and 15.683 mins 
+
+<font size="5">'Washington' city</font> 
+```{r}
+#Finding the total travel time for each user type
+by(wash$Trip.Duration/60,wash$User.Type, sum)
+```
+```{r}
+qplot(x=User.Type, y=Trip.Duration/60, data=wash,
+      geom='boxplot', color=I("darkslategray3"), fill=I('darkslategray2'))+
+  coord_cartesian(ylim=c(5,45))+  #Adjusting and omitting the outliers
+  ggtitle("Travel time per user type in Washington city") +
+  labs(x = "User type",y="Trip duration in minutes")
+```
+
+The difference between Customer and Subscriber in time is always very large, that the third quartile  for Subscribers is slightly under the first quartile for Customers at about  15 mins.
+
+<font size="4"> Summary stats</font> 
+```{r}
+by(wash$Trip.Duration/60,wash$User.Type, summary)
+```
+
+And finally to check on the exactness of the data apearing on the graph, the 25% mark for Customers is 15.334 and the 75% mark for Subscribers is 15.045 mins, which is very true!
+
+<center>, Thanks for your Time. </center>
