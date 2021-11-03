@@ -16,3 +16,8 @@ The project is about using _R_ to Explore the data related to bike share systems
 * All the team and the distinguished Mentors at [_Udacity_](https://www.udacity.com/) who supervised us throughout this rich program
 * [Configure Text Editor by path](https://stackoverflow.com/questions/49054885/how-to-fix-git-commit-with-atom-text-editor)
 * [Markdown Mastery](https://guides.github.com/features/mastering-markdown/)
+
+### Statistics done over
+* Popular times of travel|The most common month
+* Popular stations and trips|The most common start station
+* Trip duration|The total travel time for each user type in different cities
