@@ -24,12 +24,13 @@ The Chicago and New York City files also have the following two columns:
 * Terminal application [(_Git Bash_)](https://git-scm.com/download)
 * Text Editor [(_Atom_)](https://atom.io/)
 
-### Credits to
-* All the team and the distinguished Mentors at [_Udacity_](https://www.udacity.com/) who supervised us throughout this rich program
-* [Configure Text Editor by path](https://stackoverflow.com/questions/49054885/how-to-fix-git-commit-with-atom-text-editor)
-* [Markdown Mastery](https://guides.github.com/features/mastering-markdown/)
-
 ### Statistics done over
 * Popular times of travel|The most common month
 * Popular stations and trips|The most common start station
 * Trip duration|The total travel time for each user type in different cities
+There are a number of different areas of interest available in this dataset, feel free to explore any question you are interested in.
+
+### Credits to
+* All the team and the distinguished Mentors at [_Udacity_](https://www.udacity.com/) who supervised us throughout this rich program
+* [Configure Text Editor by path](https://stackoverflow.com/questions/49054885/how-to-fix-git-commit-with-atom-text-editor)
+* [Markdown Mastery](https://guides.github.com/features/mastering-markdown/)
