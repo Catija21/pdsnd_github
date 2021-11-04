@@ -19,10 +19,10 @@ The Chicago and New York City files also have the following two columns:
 
 [Link to Data Files](https://drive.google.com/drive/folders/11n45ClidwGu0S6ZG50EN8oWPe2sjYw75?usp=sharing)
 
-### Softwares used
-* _R_
-* Terminal application (_Git Bash_)
-* Text Editor (_Atom_)
+### Software used and links to Download
+* [_R_](https://cran.r-project.org/)
+* Terminal application [(_Git Bash_)](https://git-scm.com/download)
+* Text Editor [(_Atom_)](https://atom.io/)
 
 ### Credits to
 * All the team and the distinguished Mentors at [_Udacity_](https://www.udacity.com/) who supervised us throughout this rich program
