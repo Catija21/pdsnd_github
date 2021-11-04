@@ -20,7 +20,7 @@ The Chicago and New York City files also have the following two columns:
 [Link to Data Files](https://drive.google.com/drive/folders/11n45ClidwGu0S6ZG50EN8oWPe2sjYw75?usp=sharing)
 
 ### Software used and links to Download
-* [_R_](https://cran.r-project.org/)
+* [_R_](https://cran.r-project.org/), [_RStudio_](https://www.rstudio.com/products/rstudio/download/)
 * Terminal application [(_Git Bash_)](https://git-scm.com/download)
 * Text Editor [(_Atom_)](https://atom.io/)
 
