@@ -28,6 +28,7 @@ The Chicago and New York City files also have the following two columns:
 * Popular times of travel|The most common month
 * Popular stations and trips|The most common start station
 * Trip duration|The total travel time for each user type in different cities
+
 There are a number of different areas of interest available in this dataset, feel free to explore any question you are interested in.
 
 ### Credits to
