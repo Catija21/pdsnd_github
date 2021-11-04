@@ -28,21 +28,21 @@ library(ggplot2)  #Creating visualizations
 library(dplyr)  #Manipulating data frames
 
 #Creating new column only for months in each city data set
-chi$month = month(chi$Start.Time) 
-ny$month = month(ny$Start.Time)
-wash$month = month(wash$Start.Time)
+chi$month <- month(chi$Start.Time) 
+ny$month <- month(ny$Start.Time)
+wash$month <- month(wash$Start.Time)
 
 #Creating function 'Common_month', input: short and complete city name, returns: the most common month + data visualization
-common_month = function(cit,pseudo){
-  result = (paste("The most common month of travel in",pseudo,"is the month number:",mfv(cit$month)))  #mfv() finds the most frequent value
-  plot = ggplot(aes(x = month), data = cit) +
+common_month <- function(cit,pseudo){
+  result <- (paste("The most common month of travel in",pseudo,"is the month number:",mfv(cit$month)))  #mfv() finds the most frequent value
+  plot <- ggplot(aes(x = month), data = cit) +
     geom_histogram(binwidth = 0.5, color = I('black'), fill = I('darkcyan')) +
     scale_x_continuous(breaks = seq(1,6,1)) +
     ggtitle(paste('The monthly travels histogram for',pseudo,'city')) +
     xlab ('Months of travel') +
     ylab ('Count of travels')
   
-  list1 = list(result,plot)
+  list1 <- list(result,plot)
   return(list1)
 }
 
@@ -72,9 +72,9 @@ common_month(wash,"Washington")
 
 ```{r}
 #New data frames holding the months and the count of travels
-C = aggregate(chi$month, by = list(chi$month), FUN = length) #Chicago
-N = aggregate(ny$month, by = list(ny$month), FUN = length) #New York
-W = aggregate(wash$month, by = list(wash$month), FUN = length) #Washington
+C <- aggregate(chi$month, by = list(chi$month), FUN = length) #Chicago
+N <- aggregate(ny$month, by = list(ny$month), FUN = length) #New York
+W <- aggregate(wash$month, by = list(wash$month), FUN = length) #Washington
 
 #Summary Stats on the months
 summary(C$x)  #Chicago
@@ -90,23 +90,23 @@ The max and the min values confirm the ranges we had from the charts.
 
 ```{r}
 #Creating new function, input: short and complete name, returns: the most common Start Station + data visualization + the summary stats related to the top 5 stations
-common_station = function(cit,pseudo){
-  result1 = paste("The most common start station for",pseudo,"city is",mfv(cit$Start.Station))
+common_station <- function(cit,pseudo){
+  result1 <- paste("The most common start station for",pseudo,"city is",mfv(cit$Start.Station))
   
-  df = aggregate(cit$Start.Station, by = list(cit$Start.Station), FUN = length)#Creating new data frame storing the station with the related count of travels
-  df = tail(df[order(df$x),],5) #Pulling the top 5 stations after ordering the data frame
+  df <- aggregate(cit$Start.Station, by = list(cit$Start.Station), FUN = length)#Creating new data frame storing the station with the related count of travels
+  df <- tail(df[order(df$x),],5) #Pulling the top 5 stations after ordering the data frame
   names(df)[1] <- "Start_station" #Renaming the columns
   names(df)[2] <- "Count"
   
-  result2 = summary(df$Count)
+  result2 <- summary(df$Count)
   
-  result3 = ggplot(aes(x = Start_station, y = Count),data = df) +
+  result3 <- ggplot(aes(x = Start_station, y = Count),data = df) +
     geom_bar(stat = 'identity', width = 0.5, color = I('black'), fill = I('darkseagreen1')) +
     ggtitle(paste('Top 05 Start stations in',pseudo,'city')) +
     ylab ('Count of travels') +
     coord_flip()
   
-  list2 = list(result1,result3,result2)
+  list2 <- list(result1,result3,result2)
   return(list2)
 }
 ```
@@ -145,7 +145,7 @@ by(chi$Trip.Duration/60,chi$User.Type, sum) #divide Trip.Duration by 60 to get t
 
 ```{r}
 #As long as the total travel time for 'Dependent' type is insignificant, we will be plotting only for 'Customer' and 'Subscriber'
-newdf = chi[-which(chi$User.Type == 'Dependent'),]  #Creating new data frame newdf, 'Dependent' omitted 
+newdf <- chi[-which(chi$User.Type == 'Dependent'),]  #Creating new data frame newdf, 'Dependent' omitted 
 qplot(x = User.Type, y = Trip.Duration/60, data = newdf,
       geom = 'boxplot', color = I("blue4"), fill = I('deepskyblue3')) +
   coord_cartesian(ylim = c(0,40)) +  #Adjusting and omitting the outliers
