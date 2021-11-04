@@ -35,3 +35,5 @@ There are a number of different areas of interest available in this dataset, fee
 * All the team and the distinguished Mentors at [_Udacity_](https://www.udacity.com/) who supervised us throughout this rich program
 * [Configure Text Editor by path](https://stackoverflow.com/questions/49054885/how-to-fix-git-commit-with-atom-text-editor)
 * [Markdown Mastery](https://guides.github.com/features/mastering-markdown/)
+* [R code styling](https://www.r-bloggers.com/2019/01/%F0%9F%96%8A-r-coding-style-guide/)
+* [R code refactoring](https://teachdatascience.com/refactoring/)
